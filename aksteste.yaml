@@ -1,0 +1,28 @@
+parameters:
+- name: containerRegistry
+  type: string
+- name: containerRegistryPRD
+  type: string
+- name: project
+  type: string
+
+jobs:
+- job: BuildAndPush
+  displayName: "Build and push image to registry"
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - script: |
+      cat > Dockerfile <<EOF
+      FROM mcr.microsoft.com/azuredocs/aci-helloworld
+      EOF
+    displayName: "Create Dockerfile"
+  
+  - task: Docker@2
+    displayName: "Build and push image to registry"
+    inputs:
+      command: "buildAndPush"
+      dockerfile: "***/Dockerfile"
+      containerRegistry: ${{ parameters.containerRegistry }}
+      repository: "img-${{ parameters.project }}-api"
+      tags: "latest"
