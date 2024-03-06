@@ -1,8 +1,6 @@
 parameters:
 - name: containerRegistry
   type: string
-- name: containerRegistryPRD
-  type: string
 - name: project
   type: string
 
